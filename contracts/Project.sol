@@ -47,7 +47,6 @@ contract Project{
 
     uint256 public numOfWithdrawRequests = 0;
 
-    // Modifiers
     modifier isCreator(){
         require(msg.sender == creator,'You dont have access to perform this operation !');
         _;
@@ -85,8 +84,7 @@ contract Project{
     );
 
 
-    // @dev Create project
-    // @return null
+
 
    constructor(
        address _creator,
@@ -105,8 +103,7 @@ contract Project{
        raisedAmount = 0;
    }
 
-    // @dev Anyone can contribute
-    // @return null
+
 
     function contribute(address _contributor) public validateExpiry(State.Fundraising) payable {
         require(msg.value >= minimumContribution,'Contribution amount is too low !');
@@ -119,8 +116,7 @@ contract Project{
         checkFundingCompleteOrExpire();
     }
 
-    // @dev complete or expire funding
-    // @return null
+
 
     function checkFundingCompleteOrExpire() internal {
         if(raisedAmount >= targetContribution){
@@ -131,8 +127,6 @@ contract Project{
         completeAt = block.timestamp;
     }
 
-    // @dev Get contract current balance
-    // @return uint 
 
     function getContractBalance() public view returns(uint256){
         return address(this).balance;
@@ -149,8 +143,7 @@ contract Project{
         return true;
     }
 
-    // @dev Request contributor for withdraw amount
-    // @return null
+
    
     function createWithdrawRequest(string memory _description,uint256 _amount,address payable _reciptent) public isCreator() validateExpiry(State.Successful) {
         WithdrawRequest storage newRequest = withdrawRequests[numOfWithdrawRequests];
@@ -165,8 +158,6 @@ contract Project{
         emit WithdrawRequestCreated(numOfWithdrawRequests,_description, _amount,0,false,_reciptent );
     }
 
-    // @dev contributors can vote for withdraw request
-    // @return null
 
     function voteWithdrawRequest(uint256 _requestId) public {
         require(contributiors[msg.sender] > 0,'Only contributor can vote !');
@@ -177,8 +168,7 @@ contract Project{
         emit WithdrawVote(msg.sender,requestDetails.noOfVotes);
     }
 
-    // @dev Owner can withdraw requested amount
-    // @return null
+
 
     function withdrawRequestedAmount(uint256 _requestId) isCreator() validateExpiry(State.Successful) public{
         WithdrawRequest storage requestDetails = withdrawRequests[_requestId];
@@ -198,8 +188,6 @@ contract Project{
 
     }
 
-    // @dev Get contract details
-    // @return all the project's details
 
     function getProjectDetails() public view returns(
     address payable projectStarter,
