@@ -31,8 +31,6 @@ event ContributionReceived(
 
  Project[] private projects;
 
-  // @dev Anyone can start a fund rising
- // @return null
 
  function createProject(
     uint256 minimumContribution,
@@ -62,15 +60,13 @@ event ContributionReceived(
 
  }
 
- // @dev Get projects list
-// @return array
+
 
 function returnAllProjects() external view returns(Project[] memory){
    return projects;
 }
 
-// @dev User can contribute
-// @return null
+
 
 function contribute(address _projectAddress) public payable{
 
